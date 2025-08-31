@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云境 - 首页</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #8a7ef3;
+            --text-color: #333333;
+            --light-text: #666666;
+            --background: #f0f2f5;
+            --sidebar-bg: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --glass-blur: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border: rgba(255, 255, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            z-index: 10;
+            height: 100vh;
+            position: fixed;
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+
+        .logo {
+            text-align: center;
+            padding: 0 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-top: 1rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(108, 92, 231, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-links a i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 250px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            flex: 0 0 400px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: var(--shadow);
+            outline: none;
+            color: var(--text-color);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-text);
+            font-size: 1.1rem;
+            z-index: 1;
+        }
+
+        /* 窗口控制按钮样式 */
+        .window-controls {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .window-control-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+
+        .window-control-btn:hover {
+            background: rgba(108, 92, 231, 0.1);
+        }
+
+        /* 游戏卡片样式 */
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            position: relative;
+        }
+        
+        .update-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 1rem;
+        }
+
+        .game-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-genre {
+            font-size: 0.8rem;
+            color: var(--light-text);
+            margin-bottom: 1rem;
+        }
+
+        .game-card .btn {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            text-align: center;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        /* 轮播图样式 */
+        .carousel {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+        }
+
+        .carousel-caption h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption .btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(108, 92, 231, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(108, 92, 231, 0.7);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .logo h1, .nav-links span {
+                display: none;
+            }
+
+            .nav-links a {
+                justify-content: center;
+            }
+
+            .nav-links a i {
+                margin-right: 0;
+                font-size: 1.5rem;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                padding: 1rem;
+            }
+
+            .search-bar {
+                flex: 0 0 200px;
+            }
+
+            .carousel {
+                height: 200px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="logo" style="text-align: center;">
+              <img src="src/assets/logo.webp" alt="云境logo" style="width: 40px; height: 40px; display: block; margin: 0 auto 10px;">
+              <h1 style="display: block;">云境</h1>
+          </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active"><i class="fas fa-home"></i> <span>首页</span></a></li>
+            <li><a href="library.html"><i class="fas fa-book-open"></i> <span>游戏库</span></a></li>
+        </ul>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <div class="header">
+            <h2>欢迎来到云境</h2>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索游戏...">
+            </div>
+            <div class="window-controls">
+                <button class="window-control-btn" title="最小化"><i class="fas fa-window-minimize"></i></button>
+                <button class="window-control-btn" title="最大化"><i class="fas fa-window-maximize"></i></button>
+                <button class="window-control-btn" title="关闭"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+
+        <!-- 轮播图 -->
+        <div class="carousel">
+            <img src="src/assets/images/banner.jpg" alt="游戏促销">
+            <div class="carousel-caption">
+                <h3>君成录星际版</h3>
+                <p>探索未知星系，发现新的文明和资源</p>
+                <a href="details-star.html" class="btn">立即体验</a>
+            </div>
+        </div>
+
+        <!-- 推荐游戏 -->
+        <section>
+            <div class="section-title">
+                <h3>推荐游戏</h3>
+                <a href="library.html">查看全部</a>
+            </div>
+            <div class="game-grid">
+                <div class="game-card">
+                    <div class="update-badge">在更新</div>
+                    <img src="src/assets/images/game1.jpg" alt="游戏封面">
+                    <div class="game-info">
+                        <div class="game-title">君成录星际版</div>
+                        <div class="game-genre">制作者：科幻工作室</div>
+                        <a href="details-star.html" class="btn">查看详情</a>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <div class="update-badge">在更新</div>
+                    <img src="src/assets/images/game2.jpg" alt="游戏封面">
+                    <div class="game-info">
+                        <div class="game-title">君成录狂飙版</div>
+                        <div class="game-genre">制作者：竞技工作室</div>
+                        <a href="details-racing.html" class="btn">查看详情</a>
+                    </div>
+                </div>
+
+
+                <div class="game-card">
+                    <div class="update-badge">在更新</div>
+                    <img src="src/assets/images/game5.jpg" alt="游戏封面">
+                    <div class="game-info">
+                        <div class="game-title">君成录射击版</div>
+                        <div class="game-genre">制作者：射击工作室</div>
+                        <a href="details-shooter.html" class="btn">查看详情</a>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <div class="update-badge">在更新</div>
+                    <img src="src/assets/images/game6.jpg" alt="游戏封面">
+                    <div class="game-info">
+                        <div class="game-title">君成录冒险版</div>
+                        <div class="game-genre">制作者：探险工作室</div>
+                        <a href="details-adventure.html" class="btn">查看详情</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

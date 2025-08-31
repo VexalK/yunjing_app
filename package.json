@@ -1,0 +1,59 @@
+{
+  "name": "free-game-store",
+  "description": "A free game store application with frosted glass UI",
+  "version": "25.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "publish": [{
+      "provider": "github",
+      "owner": "YOUR_GITHUB_USERNAME",
+      "repo": "YOUR_REPO_NAME",
+      "releaseType": "release"
+    }],
+    "compression": "maximum",
+    "asar": true,
+    "files": [
+      "!** /node_modules/**/*",
+      "!** /tests/**/*",
+      "!** /docs/**/*",
+      "!** /.git/**/*",
+      "!**/.gitignore",
+      "!**/.env",
+      "!**/.env.*",
+      "!**/*.log",
+      "!**/tmp/**/*",
+      "!**/*.{md,LICENSE}",
+      "!**/{package-lock.json,yarn.lock}",
+      "!src/assets/**/*.{psd,ai,sketch,zip,rar}",
+      "node_modules/electron/**/*",
+      "src/**/*",
+      "main.js",
+      "preload.js",
+      "index.html",
+      "!src/assets/**/*.{psd,ai,sketch}"
+    ],
+    "extraResources": [],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "src/assets/app-icon.ico"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.0"
+  }
+}
